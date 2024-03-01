@@ -75,7 +75,7 @@ const deleteProyecto = async (req, res) => {
     }
 };
 
-const updateProyecto = async (req, res) => {
+const estadoProyecto = async (req, res) => {
     const t = await db.transaction();
     try{
         const { id } = req.params;
@@ -89,12 +89,46 @@ const updateProyecto = async (req, res) => {
             await proyecto.update({ estado: 1 }, { transaction: t });
         }
         await t.commit();
-        return res.status(200).json(responseFormat(true,200,req.path,'Proyecto actualizado',[]));
+        return res.status(200).json(responseFormat(true,200,req.path,'Estado de proyecto actualizado',[]));
     }catch(error){
         await t.rollback();
         return res.status(200).json(responseFormat(false,500,req.path,'Error al actualizar el Proyecto',[]));
     }
 };
+
+const updateProyecto = async (req, res) => {
+    const t = await db.transaction();
+    try {
+        const { id } = req.params;
+        const proyecto = await Proyecto.findByPk(id);
+        if (!proyecto) {
+            return res.status(200).json(responseFormat(false,404,req.path,'Proyecto no encontrado',[]));
+        }
+
+        const { titulo,estado_descripcion,direccion,metrajes,descripcion,video_url,mapa_url } = req.body
+        const proyectoActualizado = { titulo,estado_descripcion,direccion,metrajes,descripcion,video_url,mapa_url };
+
+        if (req.files.imagen_archivo && req.files.imagen_archivo.length > 0) {
+            proyectoActualizado.imagen_archivo = req.files.imagen_archivo[0].filename;
+        }
+
+        if (req.files.banner_archivo && req.files.banner_archivo.length > 0) {
+            proyectoActualizado.banner_archivo = req.files.banner_archivo[0].filename;
+        }
+
+        if (req.files.referencia_archivo && req.files.referencia_archivo.length > 0) {
+            proyectoActualizado.referencia_archivo = req.files.referencia_archivo[0].filename;
+        }
+
+        await proyecto.update(proyectoActualizado, { transaction: t });
+        await t.commit();
+        return res.status(200).json(responseFormat(true,200,req.path,'Proyecto actualizado',[]));
+    } catch (error) {
+        console.log(error)
+        await t.rollback();
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al actualizar el Proyecto',[]));
+    }
+}
 
 const getProyectoById = async (req, res) => {
     const { id } = req.params;
@@ -302,6 +336,7 @@ export {
     getProyecto,
     createProyecto,
     deleteProyecto,
+    estadoProyecto,
     updateProyecto,
     getProyectoById,
     createBeneficio,

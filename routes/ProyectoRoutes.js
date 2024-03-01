@@ -6,14 +6,15 @@ import {
     getProyecto, 
     createProyecto, 
     deleteProyecto, 
-    updateProyecto, 
+    estadoProyecto,
+    updateProyecto,
     getProyectoById,
     createBeneficio,
     createConocenos,
     estadoBeneficio,
     deleteBeneficio,
     estadoConocenos,
-    deleteConocenos
+    deleteConocenos,
   } from '../controllers/ProyectosController.js';
 
 
@@ -37,7 +38,22 @@ router.route('/')
 router.route('/:id')
 .get(checkAuth, getProyectoById)
 .delete(checkAuth, deleteProyecto)
-.patch(checkAuth, updateProyecto)
+.patch(checkAuth, estadoProyecto)
+
+router.route('/actualizar/:id')
+.patch(checkAuth, uploadProyecto.fields([
+    { name: 'imagen_archivo', maxCount: 1 },
+    { name: 'banner_archivo', maxCount: 1 },
+    { name: 'referencia_archivo', maxCount: 1 }
+  ]), (req, res, next) => {
+    if (req.fileValidationError) {
+        return res.status(200).json(responseFormat(false,400,req.path,req.fileValidationError,[]));
+    }
+    if (req.multerError) {
+        return res.status(200).json(responseFormat(false,400,req.path,req.multerError.message,[]));
+    }
+    next();
+}, updateProyecto);
 
 router.route('/:id/beneficio')
 .post(checkAuth, createBeneficio)
