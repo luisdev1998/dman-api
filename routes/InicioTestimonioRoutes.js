@@ -3,12 +3,13 @@ import checkAuth from '../middleware/checkAuth.js';
 import {uploadTestimonio} from '../middleware/multer.js';
 import responseFormat from '../helpers/responseFormat.js';
 import { getInicioTestimonio, createInicioTestimonio, deleteInicioTestimonio, updateInicioTestimonio, updatePositionInicioTestimonio } from '../controllers/InicioTestimonioController.js';
+import imageSize from '../middleware/imageSize.js';
 
 const router = express.Router();
 
 router.route('/')
 .get(checkAuth, getInicioTestimonio)
-.post(checkAuth, uploadTestimonio.array('archivo'), (req, res, next) => {
+.post(checkAuth, uploadTestimonio.array('archivo'), imageSize, (req, res, next) => {
     if (req.fileValidationError) {
         return res.status(200).json(responseFormat(false,400,req.path,req.fileValidationError,[]));
     }

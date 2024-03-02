@@ -32,7 +32,7 @@ const getInicioBanner = async (req, res) => {
 const createInicioBanner = async (req, res) => {
     const t = await db.transaction();
     try {
-        const { filename } = req.files[0];
+        const { filename } = req.file;
         
         const ultimoBanner = await InicioBanner.findOne({
             order: [['posicion', 'DESC']],
