@@ -13,7 +13,7 @@ const storageInformacion = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname.replace(/\s+/g, ''));
+        callback(null, uniqueSuffix + '-' + file.originalname);
     }
 });
 const storageBanner = multer.diskStorage({
@@ -26,7 +26,7 @@ const storageBanner = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname.replace(/\s+/g, ''));
+        callback(null, uniqueSuffix + '-' + file.originalname);
     }
 });
 const storageTestimonio = multer.diskStorage({
@@ -39,7 +39,7 @@ const storageTestimonio = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname.replace(/\s+/g, ''));
+        callback(null, uniqueSuffix + '-' + file.originalname);
     }
 });
 const storageProyecto = multer.diskStorage({
@@ -52,7 +52,7 @@ const storageProyecto = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname.replace(/\s+/g, ''));
+        callback(null, uniqueSuffix + '-' + file.originalname);
     }
 });
 
