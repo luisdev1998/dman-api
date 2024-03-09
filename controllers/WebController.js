@@ -130,7 +130,7 @@ const postEnviarEmail = async (req, res) => {
         const {email,telefono,nombre,apellido,dni} = req.body;
         const proyectoDetalle = await Proyecto.findByPk(id);
         const listaInformacion = await Informacion.findOne();
-        await enviarEmail(req.body,proyectoDetalle,listaInformacion.email_remitente,listaInformacion.clave_email_remitente);
+        await enviarEmail(req.body,proyectoDetalle,listaInformacion.email_remitente,listaInformacion.clave_email_remitente,listaInformacion.email_receptor);
         return res.status(200).json(responseFormat(true, 200, req.path, 'Solicitud enviada, en breve le enviaremos la información requerida', {}));
     } catch (error) {
         console.log(error);

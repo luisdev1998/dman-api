@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-const enviarEmail = async (data,proyecto,emailRemitente,claveRemitente) => {
+const enviarEmail = async (data,proyecto,emailRemitente,claveRemitente,emailReceptor) => {
     const {email,telefono,nombre,apellido,dni} = data;
     const fechaActual = new Date();
     const año = fechaActual.getFullYear();
@@ -25,8 +25,8 @@ const enviarEmail = async (data,proyecto,emailRemitente,claveRemitente) => {
 
       // Configura los detalles del correo electrónico
       await transporter.sendMail({
-        from: `"D'man Inmobiliaria & Constructora" <${email}>`, // dirección del remitente
-        to: email, // lista de destinatarios
+        from: `"D'man Inmobiliaria & Constructora" <${emailRemitente}>`, // dirección del remitente
+        to: emailReceptor, // lista de destinatarios
         subject: `CLIENTE - ${proyecto.titulo}`, // Línea de asunto
         html: `
         <div>El día de hoy ${año}/${mes}/${día} ${horaFormateada} el cliente con los siguientes datos:</div>

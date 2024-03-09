@@ -19,7 +19,8 @@ export const Informacion = db.define('INFORMACION', {
     tiktok: { type: Sequelize.STRING },
     whatsapp: { type: Sequelize.STRING },
     email_remitente: { type: Sequelize.STRING },
-    clave_email_remitente: { type: Sequelize.STRING }
+    clave_email_remitente: { type: Sequelize.STRING },
+    email_receptor: { type: Sequelize.STRING }
 },
 {
     tableName: 'INFORMACION',
