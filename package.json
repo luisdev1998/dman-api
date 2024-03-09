@@ -21,7 +21,6 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.12",
     "sequelize": "^6.35.1",
-    "sharp": "^0.33.2",
     "tedious": "^16.6.0"
   },
   "devDependencies": {
