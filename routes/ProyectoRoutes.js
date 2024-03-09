@@ -16,7 +16,6 @@ import {
     estadoConocenos,
     deleteConocenos,
   } from '../controllers/ProyectosController.js';
-import multipleImageSize from '../middleware/multipleImageSize.js';
 
 
 const router = express.Router();
@@ -27,7 +26,7 @@ router.route('/')
     { name: 'imagen_archivo', maxCount: 1 },
     { name: 'banner_archivo', maxCount: 1 },
     { name: 'referencia_archivo', maxCount: 1 }
-  ]), multipleImageSize, (req, res, next) => {
+  ]), (req, res, next) => {
     if (req.fileValidationError) {
         return res.status(200).json(responseFormat(false,400,req.path,req.fileValidationError,[]));
     }
@@ -46,7 +45,7 @@ router.route('/actualizar/:id')
     { name: 'imagen_archivo', maxCount: 1 },
     { name: 'banner_archivo', maxCount: 1 },
     { name: 'referencia_archivo', maxCount: 1 }
-  ]), multipleImageSize, (req, res, next) => {
+  ]), (req, res, next) => {
     if (req.fileValidationError) {
         return res.status(200).json(responseFormat(false,400,req.path,req.fileValidationError,[]));
     }
