@@ -72,7 +72,7 @@ const deleteInicioBanner = async (req, res) => {
         return res.status(200).json(responseFormat(true,200,req.path,'Banner eliminado correctamente',[]));
     } catch (error) {
         await t.rollback();
-        return res.status(500).json(responseFormat(false,500,req.path,'Error al eliminar el banner',[]));
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al eliminar el banner',[]));
     }
 };
 

@@ -15,7 +15,7 @@ const getInformacion = async (req, res) => {
 const patchInformacion = async (req, res) => {
     const t = await db.transaction();
     try {
-        const {numero, email, ubicacion, ubicacionUrl, facebook, youtube, instagram, tiktok, whatsapp} = req.body;
+        const {numero, email, ubicacion, ubicacionUrl, facebook, youtube, instagram, tiktok, whatsapp, emailRemitente, claveEmailRemitente} = req.body;
         const informacionParaActualizar = {};
         if(numero !== undefined) informacionParaActualizar.numero = numero;
         if(email !== undefined) informacionParaActualizar.email = email;
@@ -26,6 +26,8 @@ const patchInformacion = async (req, res) => {
         if(instagram !== undefined) informacionParaActualizar.instagram = instagram;
         if(tiktok !== undefined) informacionParaActualizar.tiktok = tiktok;
         if(whatsapp !== undefined) informacionParaActualizar.whatsapp = whatsapp;
+        if(emailRemitente !== undefined) informacionParaActualizar.email_remitente = emailRemitente;
+        if(claveEmailRemitente !== undefined) informacionParaActualizar.clave_email_remitente = claveEmailRemitente;
 
         // Actualizar el registro con ID 1
         await Informacion.update(informacionParaActualizar, { 

@@ -71,7 +71,7 @@ const deleteProyecto = async (req, res) => {
         return res.status(200).json(responseFormat(true,200,req.path,'Proyecto eliminado correctamente',[]));
     } catch (error) {
         await t.rollback();
-        return res.status(500).json(responseFormat(false,500,req.path,'Error al eliminar el Proyecto',[]));
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al eliminar el Proyecto',[]));
     }
 };
 
@@ -180,7 +180,7 @@ const getProyectoById = async (req, res) => {
         return res.status(200).json(responseFormat(true, 200, req.path, 'Éxito', proyectoDetalle));
     } catch (error) {
         console.log(error);
-        return res.status(500).json(responseFormat(false, 500, req.path, 'Error al obtener el detalle del proyecto', {}));
+        return res.status(200).json(responseFormat(false, 500, req.path, 'Error al obtener el detalle del proyecto', {}));
     }
 };
 
@@ -289,7 +289,7 @@ const deleteBeneficio = async (req, res) => {
         return res.status(200).json(responseFormat(true,200,req.path,'Beneficio eliminado correctamente',[]));
     } catch (error) {
         await t.rollback();
-        return res.status(500).json(responseFormat(false,500,req.path,'Error al eliminar el Beneficio',[]));
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al eliminar el Beneficio',[]));
     }
 };
 
@@ -327,7 +327,7 @@ const deleteConocenos = async (req, res) => {
         return res.status(200).json(responseFormat(true,200,req.path,'Eliminado correctamente',[]));
     } catch (error) {
         await t.rollback();
-        return res.status(500).json(responseFormat(false,500,req.path,'Error al eliminar',[]));
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al eliminar',[]));
     }
 };
 

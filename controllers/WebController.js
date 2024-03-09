@@ -2,6 +2,7 @@ import { Informacion } from '../models/Informacion.js'
 import { InicioBanner } from "../models/InicioBanner.js";
 import { InicioTestimonio } from "../models/InicioTestimonio.js";
 import { Proyecto, ProyectoBeneficio, ProyectoConocenos } from "../models/Proyecto.js";
+import enviarEmail from '../config/mail.js';
 import Sequelize from 'sequelize';
 import db from '../config/db.js';
 import responseFormat from "../helpers/responseFormat.js";
@@ -119,8 +120,22 @@ const getProyectoInformacion = async (req, res) => {
         return res.status(200).json(responseFormat(true, 200, req.path, 'Éxito', proyectoDetalle));
     } catch (error) {
         console.log(error);
-        return res.status(500).json(responseFormat(false, 500, req.path, 'Error al obtener el detalle del proyecto', {}));
+        return res.status(200).json(responseFormat(false, 500, req.path, 'Error al obtener el detalle del proyecto', {}));
     }
 }
 
-export { getListaInformacion, getProyectoInformacion }
+const postEnviarEmail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {email,telefono,nombre,apellido,dni} = req.body;
+        const proyectoDetalle = await Proyecto.findByPk(id);
+        const listaInformacion = await Informacion.findOne();
+        await enviarEmail(req.body,proyectoDetalle,listaInformacion.email_remitente,listaInformacion.clave_email_remitente);
+        return res.status(200).json(responseFormat(true, 200, req.path, 'Solicitud enviada, en breve le enviaremos la información requerida', {}));
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json(responseFormat(false, 500, req.path, 'Error al enviar la solicitud', {}));
+    }
+}
+
+export { getListaInformacion, getProyectoInformacion, postEnviarEmail }
