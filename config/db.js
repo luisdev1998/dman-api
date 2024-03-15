@@ -4,6 +4,8 @@ const db = new Sequelize(process.env.API_DB_DATABASE,process.env.API_DB_USUARIO,
     host: process.env.API_DB_HOST,
     port: process.env.API_DB_PORT,
     dialect: 'mssql',
+    charset: 'utf8mb4',
+    collation: 'utf8mb4_unicode_ci',
     define: {
         timestamps: false
     },

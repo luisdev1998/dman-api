@@ -1,5 +1,5 @@
 import multer from 'multer';
-import fs from 'fs';
+import fs, { lstat } from 'fs';
 import path from 'path';
 
 
@@ -13,9 +13,10 @@ const storageInformacion = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname);
+        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
+        callback(null, file.originalname);
     }
-});
+});lstat
 const storageBanner = multer.diskStorage({
     destination: function(req, file, callback) {
         const uploadPath = path.resolve('./uploads/banners');
@@ -26,7 +27,8 @@ const storageBanner = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname);
+        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
+        callback(null, file.originalname);
     }
 });
 const storageTestimonio = multer.diskStorage({
@@ -39,7 +41,8 @@ const storageTestimonio = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname);
+        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
+        callback(null, file.originalname);
     }
 });
 const storageProyecto = multer.diskStorage({
@@ -52,7 +55,8 @@ const storageProyecto = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, uniqueSuffix + '-' + file.originalname);
+        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
+        callback(null, file.originalname);
     }
 });
 
