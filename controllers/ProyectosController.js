@@ -138,7 +138,6 @@ const getProyectoById = async (req, res) => {
             include: [
                 {
                     model: ProyectoConocenos,
-                    order: [['posicion', 'DESC']],
                     where: {
                         estado: {
                             [Sequelize.Op.ne]: 3
@@ -148,7 +147,6 @@ const getProyectoById = async (req, res) => {
                 },
                 {
                     model: ProyectoBeneficio,
-                    order: [['posicion', 'DESC']],
                     where: {
                         estado: {
                             [Sequelize.Op.ne]: 3
@@ -156,6 +154,10 @@ const getProyectoById = async (req, res) => {
                     },
                     required: false
                 }
+            ],
+            order: [
+                [ProyectoConocenos, 'posicion', 'ASC'],
+                [ProyectoBeneficio, 'posicion', 'ASC']
             ]
         });
 
@@ -331,6 +333,29 @@ const deleteConocenos = async (req, res) => {
     }
 };
 
+const updatePositionConocenos = async (req, res) => {
+    const t = await db.transaction();
+    try {
+        const {dragid, dropid} = req.body;
+        const dragBanner = await ProyectoConocenos.findByPk(dragid);
+        const dropBanner = await ProyectoConocenos.findByPk(dropid);
+        if (!dragBanner || !dropBanner) {
+            return res.status(200).json(responseFormat(false,404,req.path,'Archivo no encontrado',[]));
+        }
+        const posicionDrag = dragBanner.posicion
+        const posicionDrop = dropBanner.posicion
+        console.log(posicionDrag)
+        console.log(posicionDrop)
+        await dragBanner.update({ posicion: posicionDrop }, { transaction: t });
+        await dropBanner.update({ posicion: posicionDrag }, { transaction: t });
+        await t.commit();
+        return res.status(200).json(responseFormat(true,200,req.path,'Archivo actualizado',[]));
+    } catch (error) {
+        await t.rollback();
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al actualizar el Archivo',[]));
+    }
+}
+
 
 export {
     getProyecto,
@@ -344,5 +369,6 @@ export {
     estadoBeneficio,
     deleteBeneficio,
     estadoConocenos,
-    deleteConocenos
+    deleteConocenos,
+    updatePositionConocenos
 }

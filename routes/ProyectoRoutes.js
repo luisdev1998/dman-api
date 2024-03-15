@@ -15,6 +15,7 @@ import {
     deleteBeneficio,
     estadoConocenos,
     deleteConocenos,
+    updatePositionConocenos
   } from '../controllers/ProyectosController.js';
 
 
@@ -61,6 +62,7 @@ router.route('/:id/conocenos')
 .post(checkAuth,uploadProyecto.fields([
     { name:'imagen_archivo',maxCount:1}
 ]), createConocenos)
+.patch(checkAuth, updatePositionConocenos)
 
 
 router.route('/:idProyecto/beneficio/:id')

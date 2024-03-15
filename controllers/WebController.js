@@ -82,7 +82,6 @@ const getProyectoInformacion = async (req, res) => {
             include: [
                 {
                     model: ProyectoConocenos,
-                    order: [['posicion', 'DESC']],
                     where: {
                         estado: 1
                     },
@@ -90,12 +89,15 @@ const getProyectoInformacion = async (req, res) => {
                 },
                 {
                     model: ProyectoBeneficio,
-                    order: [['posicion', 'DESC']],
                     where: {
                         estado: 1
                     },
                     required: false
                 }
+            ],
+            order: [
+                [ProyectoConocenos, 'posicion', 'ASC'],
+                [ProyectoBeneficio, 'posicion', 'ASC']
             ]
         });
 
