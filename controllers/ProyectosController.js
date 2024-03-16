@@ -7,6 +7,9 @@ const getProyecto = async (req, res) => {
     try {
         const proyectos = await Proyecto.findAll(
             {
+                order:[
+                    ['posicion','ASC']
+                ],
                 where: {
                     estado: {
                         [Sequelize.Op.ne]: 3
@@ -47,6 +50,14 @@ const createProyecto = async (req, res) => {
         if (req.files.referencia_archivo && req.files.referencia_archivo.length > 0) {
             proyecto.referencia_archivo = req.files.referencia_archivo[0].filename;
         }
+
+        const ultimoProyecto = await Proyecto.findOne({
+            order: [['posicion', 'DESC']],
+            transaction: t
+        });
+        const nuevaPosicion = ultimoProyecto ? ultimoProyecto.posicion + 1 : 1;
+        proyecto.posicion = nuevaPosicion;
+
         const nuevoProyecto = await Proyecto.create(proyecto, { transaction: t });
 
         await t.commit();
@@ -344,8 +355,6 @@ const updatePositionConocenos = async (req, res) => {
         }
         const posicionDrag = dragBanner.posicion
         const posicionDrop = dropBanner.posicion
-        console.log(posicionDrag)
-        console.log(posicionDrop)
         await dragBanner.update({ posicion: posicionDrop }, { transaction: t });
         await dropBanner.update({ posicion: posicionDrag }, { transaction: t });
         await t.commit();
@@ -353,6 +362,27 @@ const updatePositionConocenos = async (req, res) => {
     } catch (error) {
         await t.rollback();
         return res.status(200).json(responseFormat(false,500,req.path,'Error al actualizar el Archivo',[]));
+    }
+}
+
+const updatePositionProyecto = async (req, res) => {
+    const t = await db.transaction();
+    try {
+        const {dragid, dropid} = req.body;
+        const dragBanner = await Proyecto.findByPk(dragid);
+        const dropBanner = await Proyecto.findByPk(dropid);
+        if (!dragBanner || !dropBanner) {
+            return res.status(200).json(responseFormat(false,404,req.path,'Proyecto no encontrado',[]));
+        }
+        const posicionDrag = dragBanner.posicion
+        const posicionDrop = dropBanner.posicion
+        await dragBanner.update({ posicion: posicionDrop }, { transaction: t });
+        await dropBanner.update({ posicion: posicionDrag }, { transaction: t });
+        await t.commit();
+        return res.status(200).json(responseFormat(true,200,req.path,'Proyecto actualizado',[]));
+    } catch (error) {
+        await t.rollback();
+        return res.status(200).json(responseFormat(false,500,req.path,'Error al actualizar el Proyecto',[]));
     }
 }
 
@@ -370,5 +400,6 @@ export {
     deleteBeneficio,
     estadoConocenos,
     deleteConocenos,
-    updatePositionConocenos
+    updatePositionConocenos,
+    updatePositionProyecto
 }

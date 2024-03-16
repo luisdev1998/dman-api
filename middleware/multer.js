@@ -1,5 +1,5 @@
 import multer from 'multer';
-import fs, { lstat } from 'fs';
+import fs from 'fs';
 import path from 'path';
 
 
@@ -13,10 +13,12 @@ const storageInformacion = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
-        callback(null, file.originalname);
+        file.originalname = uniqueSuffix
+        const fileExtension = path.extname(file.originalname);
+        const newFileName = `${uniqueSuffix}${fileExtension}`;
+        callback(null, newFileName);
     }
-});lstat
+});
 const storageBanner = multer.diskStorage({
     destination: function(req, file, callback) {
         const uploadPath = path.resolve('./uploads/banners');
@@ -27,8 +29,13 @@ const storageBanner = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
-        callback(null, file.originalname);
+        file.originalname = uniqueSuffix
+        const fileExtension = path.extname(file.originalname);
+        console.log("=========================")
+        console.log(fileExtension)
+        console.log("=========================")
+        const newFileName = `${uniqueSuffix}${fileExtension}`;
+        callback(null, newFileName);
     }
 });
 const storageTestimonio = multer.diskStorage({
@@ -41,8 +48,10 @@ const storageTestimonio = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
-        callback(null, file.originalname);
+        file.originalname = uniqueSuffix
+        const fileExtension = path.extname(file.originalname);
+        const newFileName = `${uniqueSuffix}${fileExtension}`;
+        callback(null, newFileName);
     }
 });
 const storageProyecto = multer.diskStorage({
@@ -55,8 +64,10 @@ const storageProyecto = multer.diskStorage({
     },
     filename: function(req, file, callback) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        file.originalname = uniqueSuffix + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8')
-        callback(null, file.originalname);
+        file.originalname = uniqueSuffix
+        const fileExtension = path.extname(file.originalname);
+        const newFileName = `${uniqueSuffix}${fileExtension}`;
+        callback(null, newFileName);
     }
 });
 

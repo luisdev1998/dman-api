@@ -15,7 +15,8 @@ import {
     deleteBeneficio,
     estadoConocenos,
     deleteConocenos,
-    updatePositionConocenos
+    updatePositionConocenos,
+    updatePositionProyecto
   } from '../controllers/ProyectosController.js';
 
 
@@ -35,7 +36,9 @@ router.route('/')
         return res.status(200).json(responseFormat(false,400,req.path,req.multerError.message,[]));
     }
     next();
-}, createProyecto);
+}, createProyecto)
+.patch(checkAuth, updatePositionProyecto);
+
 router.route('/:id')
 .get(checkAuth, getProyectoById)
 .delete(checkAuth, deleteProyecto)

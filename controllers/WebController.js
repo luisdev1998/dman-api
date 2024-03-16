@@ -19,6 +19,9 @@ const getListaInformacion = async (req, res) => {
 
         const proyectos = await Proyecto.findAll(
             {
+                order:[
+                    ['posicion','ASC']
+                ],
                 where: {
                     estado: 1
                 }

@@ -15,6 +15,7 @@ export const Proyecto = db.define('PROYECTOS', {
     imagen_archivo: { type: Sequelize.STRING, allowNull: false },
     banner_archivo: { type: Sequelize.STRING, allowNull: false },
     referencia_archivo: { type: Sequelize.STRING, allowNull: false },
+    posicion: { type: Sequelize.INTEGER, allowNull: false }
 });
 
 export const ProyectoConocenos = db.define('PROYECTOS_CONOCENOS', {
