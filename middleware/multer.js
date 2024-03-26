@@ -31,9 +31,6 @@ const storageBanner = multer.diskStorage({
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         file.originalname = uniqueSuffix
         const fileExtension = path.extname(file.originalname);
-        console.log("=========================")
-        console.log(fileExtension)
-        console.log("=========================")
         const newFileName = `${uniqueSuffix}${fileExtension}`;
         callback(null, newFileName);
     }
@@ -47,10 +44,12 @@ const storageTestimonio = multer.diskStorage({
         callback(null, uploadPath);
     },
     filename: function(req, file, callback) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        file.originalname = uniqueSuffix
+        // Primero, obtén la extensión del archivo.
         const fileExtension = path.extname(file.originalname);
-        const newFileName = `${uniqueSuffix}${fileExtension}`;
+        // Luego, incluye la extensión del archivo en uniqueSuffix.
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}${fileExtension}`;
+        // Ahora, newFileName ya incluye la extensión correctamente.
+        const newFileName = uniqueSuffix; // No necesitas añadir la extensión de nuevo.
         callback(null, newFileName);
     }
 });
@@ -72,8 +71,15 @@ const storageProyecto = multer.diskStorage({
 });
 
 const filterInformacion = (req, file, callback) => {
-    if (file.size >= 50 * 1024 * 1024) {
-        req.fileValidationError = "Solo se permite archivos con menos de 50 MB";
+    if (file.size >= 30 * 1024 * 1024) {
+        req.fileValidationError = "Solo se permite archivos con menos de 30 MB";
+        return callback(null, false, req.fileValidationError);
+    }
+    callback(null, true);
+};
+const filterTestimonio = (req, file, callback) => {
+    if (file.size >= 30 * 1024 * 1024) {
+        req.fileValidationError = "Solo se permite archivos con menos de 30 MB";
         return callback(null, false, req.fileValidationError);
     }
     callback(null, true);
@@ -88,7 +94,7 @@ const filter = (req, file, callback) => {
 
 const uploadInformacion = multer({ storage: storageInformacion, fileFilter: filterInformacion });
 const uploadBanner = multer({ storage: storageBanner, fileFilter: filter });
-const uploadTestimonio = multer({ storage: storageTestimonio, fileFilter: filter });
+const uploadTestimonio = multer({ storage: storageTestimonio, fileFilter: filterTestimonio });
 const uploadProyecto = multer({ storage: storageProyecto, fileFilter: filter });
 
 export {uploadInformacion,uploadBanner,uploadTestimonio,uploadProyecto};
